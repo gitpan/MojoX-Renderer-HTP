@@ -4,6 +4,8 @@ use warnings;
 use strict;
 use Carp;
 
+use base 'Mojo::Base';
+
 use HTML::Template::Pro ();
 
 =head1 NAME
@@ -12,7 +14,7 @@ MojoX::Renderer::HTP - HTML::Tempate::Pro renderer for Mojo
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 

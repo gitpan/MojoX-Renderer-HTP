@@ -18,8 +18,8 @@ Version 0.02
 
 =cut
 
-our $VERSION = '0.02';
-__PACKAGE__->attr('pro', default => 1);
+our $VERSION = '0.031';
+__PACKAGE__->attr('pro' => 1);
 
 =head1 SYNOPSIS
 
@@ -39,12 +39,13 @@ Add the handler:
        );
 
        $self->renderer->add_handler( pro => $pro );
+       
+       $self->renderer->default_handler('pro');
     }
 
 Then in controller:
 
    $self->render(
-        handler => 'pro',
         message => 'test', 
         list    => [{id => 1}, { id=>2 }]
    );
@@ -76,14 +77,19 @@ sub _init {
 }
 
 sub _render {
-    my ($self, $renderer, $c, $output) = @_;
+    my ($self, $renderer, $c, $output, $options) = @_;
 
-    # get template name
-    my $template_path = $c->stash->{template};
+    # get template name from controller 
+    my $template = $c->stash->{template};
 
+    # if not set get it from options
+    $template = $renderer->template_path($options)
+        unless $template;
+
+    # try to get content
     my $content = eval {
 	   my $t = HTML::Template::Pro->new(
-	       filename            => $template_path,
+	       filename            => $template,
 	       die_on_bad_params   => 1,
 	       %{$self->pro}
         );
@@ -92,16 +98,21 @@ sub _render {
         $t->output();
     };
 
+    # write error message to log if eval fails
+    # and return with false
     if($@) {
         warn "MojoX::Renderer::HTP ERROR: $@";
         return 0;
     }
 
+    # return false if content empty
     return 0
         unless $content;
-     
+    
+    # assign content to $output ref 
     $$output = $content;
     
+    # and return with true (success)
     return 1;
 }
 

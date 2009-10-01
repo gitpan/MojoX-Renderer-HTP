@@ -14,11 +14,11 @@ MojoX::Renderer::HTP - HTML::Tempate::Pro renderer for Mojo
 
 =head1 VERSION
 
-Version 0.02
+Version 0.032
 
 =cut
 
-our $VERSION = '0.031';
+our $VERSION = '0.032';
 __PACKAGE__->attr('pro' => 1);
 
 =head1 SYNOPSIS
@@ -33,7 +33,7 @@ Add the handler:
        my $pro = MojoX::Renderer::HTP->build(
             mojo => $self,
     		template_options => {
-    			path 			=> [ $self->renderer->root ], 		
+    			path 			=> [ $self->home->rel_dir('templates') ], 		
     		}
 
        );

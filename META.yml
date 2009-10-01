@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               MojoX-Renderer-HTP
-version:            0.031
+version:            0.032
 abstract:           HTML::Template::Pro renderer for Mojo
 author:
     - Sergey Lobin <ifitwasi@gmail.com>
